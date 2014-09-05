@@ -38,8 +38,9 @@ namespace FrameSynthesis.VR
         public void Update()
         {
             // Recode orientation
+			Vector3 p = Vector3.zero;
             Quaternion q = Quaternion.identity;
-            OVRDevice.GetPredictedOrientation(sensor, ref q);
+			OVRDevice.GetCameraPositionOrientation(ref p, ref q);
 
             samples.AddFirst(new Sample(Time.time, q));
             if (samples.Count >= 60) {

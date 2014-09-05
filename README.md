@@ -1,5 +1,5 @@
-RiftGesture
-===========
+RiftGesture (for DK2)
+=====================
 An experiment to detect head gestures (nod and headshake) with Oculus Rift and Unity.
 Requires Oculus Rift and Unity Pro. This project contains two scenes.
 
