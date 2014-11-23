@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Action : MonoBehaviour
+public class YesNo : MonoBehaviour
 {
     public Transform messagePrefab;
 
