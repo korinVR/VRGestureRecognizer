@@ -20,11 +20,13 @@ A test scene to detect gestures. You can tweak DetectNod and DetectHeadshake fun
 
 A simple example to use the gesture detection. For some reason the script messages are written in Japanese. You can edit "Script Example/Resources/script.txt."
 
+# License
+
 This project (excluding Oculus SDK) is public domain.
 
 # Author
 
-Katsuomi Kobayashi
-http://framesynthesis.com/
+Katsuomi Kobayashi ([@KatsuomiK](https://twitter.com/KatsuomiK))
 
+http://framesynthesis.com/
 
