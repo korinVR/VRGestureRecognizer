@@ -10,7 +10,7 @@ namespace FrameSynthesis.VR
         float project(float angle)
         {
             const float scale = 180f;
-            return MyMath.LinearMap(MyMath.wrapAngle(angle), -scale, scale, 0f, 1f);
+            return MyMath.LinearMap(MyMath.WrapAngle(angle), -scale, scale, 0f, 1f);
         }
 
         void OnPostRender()

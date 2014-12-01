@@ -17,8 +17,8 @@ namespace FrameSynthesis.VR
             this.orientation = orientation;
 
             eulerAngles = orientation.eulerAngles;
-            eulerAngles.x = MyMath.wrapAngle(eulerAngles.x);
-            eulerAngles.y = MyMath.wrapAngle(eulerAngles.y);
+            eulerAngles.x = MyMath.WrapAngle(eulerAngles.x);
+            eulerAngles.y = MyMath.WrapAngle(eulerAngles.y);
         }
     }
 
@@ -39,7 +39,6 @@ namespace FrameSynthesis.VR
         {
             // Recode orientation
             OVRPose pose = OVRManager.display.GetHeadPose();
-            Vector3 p = pose.position;
             Quaternion q = pose.orientation;
 
             samples.AddFirst(new Sample(Time.time, q));

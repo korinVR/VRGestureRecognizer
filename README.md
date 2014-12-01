@@ -6,7 +6,7 @@ An experiment to detect head gestures (nod and headshake) with Oculus Rift and U
 
 - Oculus Rift DK2
 - Oculus Runtime 0.4.3+
-- Unity Pro 4.6 RC3+
+- Unity 4.6+ Pro
 
 # Scenes
 
