@@ -121,11 +121,6 @@ public class ScriptEngine : MonoBehaviour
         listener.noLabel = noLabel;
     }
 
-    void WaitForClick()
-    {
-        UnityEngineInternal.APIUpdaterRuntimeServices.AddComponent(GameObject.Find("Rift Gesture"), "Assets/Script Example/ScriptEngine.cs (126,9)", "ClickListener");
-    }
-
     void WaitForMessage(string message)
     {
         GameObject.Find("Message").SendMessage("StartMessage", message);
