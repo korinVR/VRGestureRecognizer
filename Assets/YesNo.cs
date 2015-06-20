@@ -17,7 +17,7 @@ public class YesNo : MonoBehaviour
     void SpawnMessage(string text)
     {
         Transform message = (Transform) Instantiate(messagePrefab);
-        message.parent = GameObject.Find("CenterEyeAnchor").transform;
+        message.parent = GameObject.Find("Camera").transform;
         message.transform.localPosition = new Vector3(0f, 0f, 10);
         message.transform.localRotation = Quaternion.identity;
         message.SendMessage("SetText", text);

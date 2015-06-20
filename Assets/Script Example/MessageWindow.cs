@@ -27,7 +27,7 @@ public class MessageWindow : MonoBehaviour
                 prevCursor = cursor;
                 char letter = message[cursor];
                 if (letter != 32 && letter != 10) {
-                    audio.Play();
+                    GetComponent<AudioSource>().Play();
                 }
             }
         }

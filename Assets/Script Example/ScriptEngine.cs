@@ -116,14 +116,14 @@ public class ScriptEngine : MonoBehaviour
 
     void WaitForYesNo(string yesLabel, string noLabel)
     {
-        YesNoListener listener = GameObject.Find("Rift Gesture").AddComponent("YesNoListener") as YesNoListener;
+        YesNoListener listener = GameObject.Find("Rift Gesture").AddComponent<YesNoListener>() as YesNoListener;
         listener.yesLabel = yesLabel;
         listener.noLabel = noLabel;
     }
 
     void WaitForClick()
     {
-        GameObject.Find("Rift Gesture").AddComponent("ClickListener");
+        UnityEngineInternal.APIUpdaterRuntimeServices.AddComponent(GameObject.Find("Rift Gesture"), "Assets/Script Example/ScriptEngine.cs (126,9)", "ClickListener");
     }
 
     void WaitForMessage(string message)
