@@ -1,12 +1,11 @@
-RiftGesture (for DK2)
-=====================
+RiftGesture
+===========
 An experiment to recognize head gestures (nod and headshake) with Oculus Rift and Unity.
 
 # Requirements
 
-- Oculus Rift DK2
-- Oculus Runtime 0.6.0+
-- Unity 5.1.1+
+- Oculus Rift CV1/DK2
+- Unity 5.4.0
 
 # Scenes
 
@@ -28,5 +27,5 @@ This project is public domain.
 
 Katsuomi Kobayashi ([@KatsuomiK](https://twitter.com/KatsuomiK))
 
-http://framesynthesis.com/
+https://framesynthesis.com/
 
