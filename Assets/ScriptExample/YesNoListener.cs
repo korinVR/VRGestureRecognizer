@@ -11,7 +11,7 @@ public class YesNoListener : MonoBehaviour
         GetComponent<AudioSource>().Play();
         Destroy(this);
     }
-    
+
     public void TriggerNo()
     {
         GameObject.Find("Script Engine").SendMessage("GoTo", noLabel);

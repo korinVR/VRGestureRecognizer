@@ -5,7 +5,7 @@ namespace FrameSynthesis.VR
     public class DebugGraphRenderer : MonoBehaviour
     {
         public Material material;
-        public GameObject riftGesture;
+        public GameObject vrGesture;
 
         float project(float angle)
         {
@@ -16,7 +16,7 @@ namespace FrameSynthesis.VR
         void OnPostRender()
         {
             material.SetPass(0);
-        
+
             GL.LoadOrtho();
             GL.Begin(GL.LINES);
 
@@ -28,23 +28,24 @@ namespace FrameSynthesis.VR
 
             float[] timestamps;
             Quaternion[] orientations;
-            riftGesture.GetComponent<RiftGesture>().GetGraphEntries(out timestamps, out orientations);
+            vrGesture.GetComponent<VRGesture>().GetGraphEntries(out timestamps, out orientations);
 
             GL.Color(Color.red);
-            for (int i = 0; i < timestamps.Length - 1; i++) {
+            for (int i = 0; i < timestamps.Length - 1; i++)
+            {
                 GL.Vertex3(Time.time - timestamps[i], project(orientations[i].eulerAngles.x), 0f);
                 GL.Vertex3(Time.time - timestamps[i + 1], project(orientations[i + 1].eulerAngles.x), 0f);
             }
-        
+
             GL.Color(Color.green);
-            for (int i = 0; i < timestamps.Length - 1; i++) {
+            for (int i = 0; i < timestamps.Length - 1; i++)
+            {
                 GL.Vertex3(project(orientations[i].eulerAngles.y), Time.time - timestamps[i], 0f);
                 GL.Vertex3(project(orientations[i + 1].eulerAngles.y), Time.time - timestamps[i + 1], 0f);
             }
-        
+
             GL.End();
         }
 
     }
 }
-

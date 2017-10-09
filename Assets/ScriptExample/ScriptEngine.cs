@@ -23,17 +23,20 @@ public class ScriptEngine : MonoBehaviour
 
         labels = new Dictionary<string, int>();
 
-        for (int i = 0; i < lines.Length; i++) {
+        for (int i = 0; i < lines.Length; i++)
+        {
             // Trim
             string line = lines[i].Trim();
 
             // Comment
-            if (line.StartsWith(";")) {
+            if (line.StartsWith(";"))
+            {
                 line = "";
             }
 
             // Label
-            if (line.StartsWith("*")) {
+            if (line.StartsWith("*"))
+            {
                 labels.Add(line.Substring(1), i);
                 line = "";
             }
@@ -45,8 +48,10 @@ public class ScriptEngine : MonoBehaviour
 
     string GetCommand(string line)
     {
-        foreach (string command in commands) {
-            if (line.StartsWith(command)) {
+        foreach (string command in commands)
+        {
+            if (line.StartsWith(command))
+            {
                 return command;
             }
         }
@@ -56,51 +61,57 @@ public class ScriptEngine : MonoBehaviour
     void NextCommand()
     {
         string command = GetCommand(lines[cursor]);
-        switch (command) {
-        case "riftgesture":
-            var r = new Regex(@"^riftgesture\s+\*(\w+)\s*,\s*\*(\w+)$");
-            var m = r.Match(lines[cursor]);
+        switch (command)
+        {
+            case "riftgesture":
+                var r = new Regex(@"^riftgesture\s+\*(\w+)\s*,\s*\*(\w+)$");
+                var m = r.Match(lines[cursor]);
 
-            if (m.Groups.Count == 3) {
-                string yesLabel = m.Groups[1].ToString();
-                string noLabel = m.Groups[2].ToString();
-                WaitForYesNo(yesLabel, noLabel);
-                return;
-            }
-            // Syntax error
-            throw new Exception();
+                if (m.Groups.Count == 3)
+                {
+                    string yesLabel = m.Groups[1].ToString();
+                    string noLabel = m.Groups[2].ToString();
+                    WaitForYesNo(yesLabel, noLabel);
+                    return;
+                }
+                // Syntax error
+                throw new Exception();
 
-        case "delay":
-            r = new Regex(@"^delay\s+(\d+)$");
-            m = r.Match(lines[cursor]);
+            case "delay":
+                r = new Regex(@"^delay\s+(\d+)$");
+                m = r.Match(lines[cursor]);
 
-            if (m.Groups.Count == 2) {
-                cursor++;
-                int time = int.Parse(m.Groups[1].ToString());
-                Invoke("NextCommand", time / 1000f);
-                return;
-            }
-            // Syntax error
-            throw new Exception();
+                if (m.Groups.Count == 2)
+                {
+                    cursor++;
+                    int time = int.Parse(m.Groups[1].ToString());
+                    Invoke("NextCommand", time / 1000f);
+                    return;
+                }
+                // Syntax error
+                throw new Exception();
 
-        case "goto":
-            r = new Regex(@"^goto\s+\*(\w+)$");
-            m = r.Match(lines[cursor]);
+            case "goto":
+                r = new Regex(@"^goto\s+\*(\w+)$");
+                m = r.Match(lines[cursor]);
 
-            if (m.Groups.Count == 2) {
-                string label = m.Groups[1].ToString();
-                GoTo(label);
-                return;
-            }
-            // Syntax error
-            throw new Exception();
+                if (m.Groups.Count == 2)
+                {
+                    string label = m.Groups[1].ToString();
+                    GoTo(label);
+                    return;
+                }
+                // Syntax error
+                throw new Exception();
         }
 
         string message = "";
 
-        while (GetCommand(lines[cursor]) == "") {
+        while (GetCommand(lines[cursor]) == "")
+        {
             string line = lines[cursor];
-            if (line != "") {
+            if (line != "")
+            {
                 message += line + "\n";
             }
             cursor++;

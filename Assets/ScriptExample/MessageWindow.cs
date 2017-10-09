@@ -13,9 +13,11 @@ public class MessageWindow : MonoBehaviour
 
     void Update()
     {
-        if (running) {
-            int cursor = (int) ((Time.time - messageStartTime) / interval);
-            if (cursor >= message.Length) {
+        if (running)
+        {
+            int cursor = (int)((Time.time - messageStartTime) / interval);
+            if (cursor >= message.Length)
+            {
                 running = false;
                 GameObject.Find("Script Engine").SendMessage("NextCommand");
                 return;
@@ -23,10 +25,12 @@ public class MessageWindow : MonoBehaviour
 
             GetComponent<TextMesh>().text = message.Substring(0, cursor + 1);
 
-            if (prevCursor != cursor) {
+            if (prevCursor != cursor)
+            {
                 prevCursor = cursor;
                 char letter = message[cursor];
-                if (letter != 32 && letter != 10) {
+                if (letter != 32 && letter != 10)
+                {
                     GetComponent<AudioSource>().Play();
                 }
             }
