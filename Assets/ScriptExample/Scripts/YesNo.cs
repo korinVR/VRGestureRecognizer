@@ -3,12 +3,14 @@ using FrameSynthesis.VR;
 
 namespace ScriptExample
 {
-    public class YesNoListener : MonoBehaviour
+    public class YesNo : MonoBehaviour
     {
         [SerializeField]
         VRGesture vrGesture;
         [SerializeField]
         ScriptEngine scriptEngine;
+        [SerializeField]
+        AudioSource gestureSound;
 
         void Start()
         {
@@ -16,21 +18,21 @@ namespace ScriptExample
             vrGesture.HeadShakeHandler += OnHeadShake;
         }
 
-        public void OnNod()
+        void OnNod()
         {
             if (scriptEngine.IsYesNoWaiting)
             {
                 scriptEngine.AnswerYes();
-                GetComponent<AudioSource>().Play();
+                gestureSound.Play();
             }
         }
 
-        public void OnHeadShake()
+        void OnHeadShake()
         {
             if (scriptEngine.IsYesNoWaiting)
             {
                 scriptEngine.AnswerNo();
-                GetComponent<AudioSource>().Play();
+                gestureSound.Play();
             }
         }
     }

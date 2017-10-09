@@ -17,12 +17,12 @@ namespace FrameSynthesis.VR.Example
             vrGesture.HeadShakeHandler += OnHeadShake;
         }
 
-        public void OnNod()
+        void OnNod()
         {
             SpawnMessage("Yes!");
         }
 
-        public void OnHeadShake()
+        void OnHeadShake()
         {
             SpawnMessage("No!");
         }

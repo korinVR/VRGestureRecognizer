@@ -28,11 +28,11 @@ namespace FrameSynthesis.VR
         [SerializeField]
         float detectInterval = 0.5f;
 
-        LinkedList<Sample> samples = new LinkedList<Sample>();
-        float waitTime = 0f;
-
         public event Action NodHandler;
         public event Action HeadShakeHandler;
+
+        LinkedList<Sample> samples = new LinkedList<Sample>();
+        float waitTime = 0f;
 
         void Update()
         {
