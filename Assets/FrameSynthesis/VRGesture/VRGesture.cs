@@ -25,8 +25,6 @@ namespace FrameSynthesis.VR
 
     public class VRGesture : MonoBehaviour
     {
-        public int sensor = 0;
-
         LinkedList<Sample> samples;
         float waitTime = 0f;
         const float detectInterval = 0.5f;

@@ -1,26 +1,36 @@
 ﻿using UnityEngine;
+using FrameSynthesis.VR;
 
 public class YesNo : MonoBehaviour
 {
-    public Transform messagePrefab;
+    [SerializeField]
+    VRGesture vrGesture;
 
-    public void TriggerYes()
+    [SerializeField]
+    GameObject messagePrefab;
+
+    void Start()
+    {
+        vrGesture.NodHandler += OnNod;
+        vrGesture.HeadShakeHandler += OnHeadShake;
+    }
+
+    public void OnNod()
     {
         SpawnMessage("Yes!");
     }
 
-    public void TriggerNo()
+    public void OnHeadShake()
     {
         SpawnMessage("No!");
     }
 
     void SpawnMessage(string text)
     {
-        Transform message = (Transform)Instantiate(messagePrefab);
-        message.parent = GameObject.Find("Camera").transform;
-        message.transform.localPosition = new Vector3(0f, 0f, 10);
+        var message = Instantiate(messagePrefab);
+        message.transform.SetParent(Camera.main.transform);
+        message.transform.localPosition = new Vector3(0f, 0f, 10f);
         message.transform.localRotation = Quaternion.identity;
         message.SendMessage("SetText", text);
     }
-
 }
