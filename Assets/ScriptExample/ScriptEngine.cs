@@ -2,9 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using FrameSynthesis.VR;
 
 public class ScriptEngine : MonoBehaviour
 {
+    [SerializeField]
+    MessageWindow messageWindow;
+
     int cursor = 0;
     string[] lines;
 
@@ -13,6 +17,25 @@ public class ScriptEngine : MonoBehaviour
         "delay",
         "goto"
     };
+
+    public enum State
+    {
+        Normal,
+        YesNoWaiting,
+    }
+
+    State state;
+
+    public bool IsYesNoWaiting
+    {
+        get
+        {
+            return state == State.YesNoWaiting;
+        }
+    }
+
+    string yesLabel;
+    string noLabel;
 
     Dictionary<string, int> labels;
 
@@ -43,6 +66,8 @@ public class ScriptEngine : MonoBehaviour
             lines[i] = line;
         }
 
+        state = State.Normal;
+
         NextCommand();
     }
 
@@ -58,7 +83,7 @@ public class ScriptEngine : MonoBehaviour
         return "";
     }
 
-    void NextCommand()
+    public void NextCommand()
     {
         string command = GetCommand(lines[cursor]);
         switch (command)
@@ -69,9 +94,9 @@ public class ScriptEngine : MonoBehaviour
 
                 if (m.Groups.Count == 3)
                 {
-                    string yesLabel = m.Groups[1].ToString();
-                    string noLabel = m.Groups[2].ToString();
-                    WaitForYesNo(yesLabel, noLabel);
+                    yesLabel = m.Groups[1].ToString();
+                    noLabel = m.Groups[2].ToString();
+                    state = State.YesNoWaiting;
                     return;
                 }
                 // Syntax error
@@ -119,22 +144,33 @@ public class ScriptEngine : MonoBehaviour
         WaitForMessage(message);
     }
 
-    void GoTo(string label)
+    public void GoTo(string label)
     {
         cursor = labels[label];
         NextCommand();
     }
 
-    void WaitForYesNo(string yesLabel, string noLabel)
+    public void AnswerYes()
     {
-        YesNoListener listener = GameObject.Find("Rift Gesture").AddComponent<YesNoListener>() as YesNoListener;
-        listener.yesLabel = yesLabel;
-        listener.noLabel = noLabel;
+        if (state == State.YesNoWaiting)
+        {
+            state = State.Normal;
+            GoTo(yesLabel);
+        }
+    }
+
+    public void AnswerNo()
+    {
+        if (state == State.YesNoWaiting)
+        {
+            state = State.Normal;
+            GoTo(noLabel);
+        }
     }
 
     void WaitForMessage(string message)
     {
-        GameObject.Find("Message").SendMessage("StartMessage", message);
+        messageWindow.StartMessage(message);
     }
 }
 

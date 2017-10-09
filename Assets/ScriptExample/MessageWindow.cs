@@ -2,6 +2,9 @@
 
 public class MessageWindow : MonoBehaviour
 {
+    [SerializeField]
+    ScriptEngine scriptEngine;
+
     public float interval = 0.05f;
 
     bool running = false;
@@ -19,7 +22,7 @@ public class MessageWindow : MonoBehaviour
             if (cursor >= message.Length)
             {
                 running = false;
-                GameObject.Find("Script Engine").SendMessage("NextCommand");
+                scriptEngine.NextCommand();
                 return;
             }
 
@@ -37,7 +40,7 @@ public class MessageWindow : MonoBehaviour
         }
     }
 
-    void StartMessage(string message)
+    public void StartMessage(string message)
     {
         this.message = message;
         messageStartTime = Time.time;

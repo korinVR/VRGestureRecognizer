@@ -1,21 +1,34 @@
 ﻿using UnityEngine;
+using FrameSynthesis.VR;
 
 public class YesNoListener : MonoBehaviour
 {
-    public string yesLabel;
-    public string noLabel;
+    [SerializeField]
+    VRGesture vrGesture;
+    [SerializeField]
+    ScriptEngine scriptEngine;
+
+    void Start()
+    {
+        vrGesture.NodHandler += TriggerYes;
+        vrGesture.HeadShakeHandler += TriggerNo;
+    }
 
     public void TriggerYes()
     {
-        GameObject.Find("Script Engine").SendMessage("GoTo", yesLabel);
-        GetComponent<AudioSource>().Play();
-        Destroy(this);
+        if (scriptEngine.IsYesNoWaiting)
+        {
+            scriptEngine.AnswerYes();
+            GetComponent<AudioSource>().Play();
+        }
     }
 
     public void TriggerNo()
     {
-        GameObject.Find("Script Engine").SendMessage("GoTo", noLabel);
-        GetComponent<AudioSource>().Play();
-        Destroy(this);
+        if (scriptEngine.IsYesNoWaiting)
+        {
+            scriptEngine.AnswerNo();
+            GetComponent<AudioSource>().Play();
+        }
     }
 }

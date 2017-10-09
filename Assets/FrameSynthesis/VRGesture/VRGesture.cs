@@ -31,6 +31,9 @@ namespace FrameSynthesis.VR
         float waitTime = 0f;
         const float detectInterval = 0.5f;
 
+        public event Action NodHandler;
+        public event Action HeadShakeHandler;
+
         public VRGesture()
         {
             samples = new LinkedList<Sample>();
@@ -91,7 +94,7 @@ namespace FrameSynthesis.VR
                 if (xMax - basePos > 10f &&
                     Mathf.Abs(current - basePos) < 5f)
                 {
-                    SendMessage("TriggerYes", SendMessageOptions.DontRequireReceiver);
+                    if (NodHandler != null) { NodHandler.Invoke(); }
                     waitTime = detectInterval;
                 }
             }
@@ -113,7 +116,7 @@ namespace FrameSynthesis.VR
                 if ((yMax - basePos > 10f || basePos - yMin > 10f) &&
                     Mathf.Abs(current - basePos) < 5f)
                 {
-                    SendMessage("TriggerNo", SendMessageOptions.DontRequireReceiver);
+                    if (HeadShakeHandler != null) { HeadShakeHandler.Invoke(); }
                     waitTime = detectInterval;
                 }
             }
