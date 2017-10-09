@@ -11,14 +11,24 @@ namespace ScriptExample
         [SerializeField]
         MessageWindow messageWindow;
 
+        public bool IsYesNoWaiting
+        {
+            get
+            {
+                return state == State.YesNoWaiting;
+            }
+        }
+
+        public event Action<string> ShowMessageHandler;
+
         int cursor = 0;
         string[] lines;
 
         string[] commands = {
-        "gesture",
-        "delay",
-        "goto"
-    };
+            "gesture",
+            "delay",
+            "goto"
+        };
 
         public enum State
         {
@@ -27,14 +37,6 @@ namespace ScriptExample
         }
 
         State state;
-
-        public bool IsYesNoWaiting
-        {
-            get
-            {
-                return state == State.YesNoWaiting;
-            }
-        }
 
         string yesLabel;
         string noLabel;
@@ -141,7 +143,8 @@ namespace ScriptExample
                 }
                 cursor++;
             }
-            WaitForMessage(message);
+
+            if (ShowMessageHandler != null) { ShowMessageHandler.Invoke(message); }
         }
 
         public void GoTo(string label)
@@ -166,11 +169,6 @@ namespace ScriptExample
                 state = State.Normal;
                 GoTo(noLabel);
             }
-        }
-
-        void WaitForMessage(string message)
-        {
-            messageWindow.StartMessage(message);
         }
     }
 }

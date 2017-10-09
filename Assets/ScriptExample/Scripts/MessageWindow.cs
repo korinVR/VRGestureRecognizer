@@ -22,33 +22,37 @@ namespace ScriptExample
 
         int prevCursor;
 
+        void Start()
+        {
+            scriptEngine.ShowMessageHandler += OnShowMessage;
+        }
+
         void Update()
         {
-            if (running)
+            if (!running) return;
+
+            int cursor = (int)((Time.time - messageStartTime) / interval);
+            if (cursor >= message.Length)
             {
-                int cursor = (int)((Time.time - messageStartTime) / interval);
-                if (cursor >= message.Length)
-                {
-                    running = false;
-                    scriptEngine.NextCommand();
-                    return;
-                }
+                running = false;
+                scriptEngine.NextCommand();
+                return;
+            }
 
-                textMesh.text = message.Substring(0, cursor + 1);
+            textMesh.text = message.Substring(0, cursor + 1);
 
-                if (prevCursor != cursor)
+            if (prevCursor != cursor)
+            {
+                prevCursor = cursor;
+                char letter = message[cursor];
+                if (letter != 32 && letter != 10)
                 {
-                    prevCursor = cursor;
-                    char letter = message[cursor];
-                    if (letter != 32 && letter != 10)
-                    {
-                        audioSource.Play();
-                    }
+                    audioSource.Play();
                 }
             }
         }
 
-        public void StartMessage(string message)
+        public void OnShowMessage(string message)
         {
             this.message = message;
             messageStartTime = Time.time;

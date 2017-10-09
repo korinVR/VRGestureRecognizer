@@ -1,14 +1,16 @@
-﻿Shader "My Shader/GL Line" {
-	SubShader {
-		Pass {
+﻿Shader "Frame Synthesis/GL Line"
+{
+	SubShader
+	{
+		Pass
+		{
 			Blend SrcAlpha OneMinusSrcAlpha
 			ZWrite Off Cull Off Fog { Mode Off }
-			BindChannels {
+			BindChannels
+			{
 				Bind "vertex", vertex
 				Bind "color", color
 			}
 		}
 	}
 }
-	
-
