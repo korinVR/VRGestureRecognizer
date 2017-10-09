@@ -14,7 +14,7 @@ namespace FrameSynthesis.VR.Example
         void Start()
         {
             vrGesture.NodHandler += OnNod;
-            vrGesture.HeadShakeHandler += OnHeadShake;
+            vrGesture.HeadshakeHandler += OnHeadshake;
         }
 
         void OnNod()
@@ -22,7 +22,7 @@ namespace FrameSynthesis.VR.Example
             SpawnMessage("Yes!");
         }
 
-        void OnHeadShake()
+        void OnHeadshake()
         {
             SpawnMessage("No!");
         }

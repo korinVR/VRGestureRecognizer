@@ -15,7 +15,7 @@ namespace ScriptExample
         void Start()
         {
             vrGesture.NodHandler += OnNod;
-            vrGesture.HeadShakeHandler += OnHeadShake;
+            vrGesture.HeadshakeHandler += OnHeadshake;
         }
 
         void OnNod()
@@ -27,7 +27,7 @@ namespace ScriptExample
             }
         }
 
-        void OnHeadShake()
+        void OnHeadshake()
         {
             if (scriptEngine.IsYesNoWaiting)
             {

@@ -29,7 +29,7 @@ namespace FrameSynthesis.VR
         float detectInterval = 0.5f;
 
         public event Action NodHandler;
-        public event Action HeadShakeHandler;
+        public event Action HeadshakeHandler;
 
         LinkedList<Sample> samples = new LinkedList<Sample>();
         float waitTime = 0f;
@@ -111,7 +111,7 @@ namespace FrameSynthesis.VR
                 if ((yMax - basePos > 10f || basePos - yMin > 10f) &&
                     Mathf.Abs(current - basePos) < 5f)
                 {
-                    if (HeadShakeHandler != null) { HeadShakeHandler.Invoke(); }
+                    if (HeadshakeHandler != null) { HeadshakeHandler.Invoke(); }
                     waitTime = detectInterval;
                 }
             }
