@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(TextMesh))]
 public class Message : MonoBehaviour
 {
+    [SerializeField]
+    float lifetime = 1f;
+    [SerializeField]
+    Vector3 velocity;
+
     void Start()
     {
-        Destroy(gameObject, 1f);
+        Destroy(gameObject, lifetime);
     }
 
     public void SetText(string text)
@@ -14,10 +20,6 @@ public class Message : MonoBehaviour
 
     void Update()
     {
-        Vector3 p = transform.localPosition;
-        p.y += 1f * Time.deltaTime;
-        transform.localPosition = p;
+        transform.Translate(velocity * Time.deltaTime);
     }
 }
-
-

@@ -4,8 +4,10 @@ namespace FrameSynthesis.VR
 {
     public class DebugGraphRenderer : MonoBehaviour
     {
-        public Material material;
-        public GameObject vrGesture;
+        [SerializeField]
+        Material material;
+        [SerializeField]
+        VRGesture vrGesture;
 
         float project(float angle)
         {
@@ -28,7 +30,7 @@ namespace FrameSynthesis.VR
 
             float[] timestamps;
             Quaternion[] orientations;
-            vrGesture.GetComponent<VRGesture>().GetGraphEntries(out timestamps, out orientations);
+            vrGesture.GetGraphEntries(out timestamps, out orientations);
 
             GL.Color(Color.red);
             for (int i = 0; i < timestamps.Length - 1; i++)

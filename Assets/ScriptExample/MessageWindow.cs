@@ -5,7 +5,13 @@ public class MessageWindow : MonoBehaviour
     [SerializeField]
     ScriptEngine scriptEngine;
 
-    public float interval = 0.05f;
+    [SerializeField]
+    float interval = 0.05f;
+
+    [SerializeField]
+    TextMesh textMesh;
+    [SerializeField]
+    AudioSource audioSource;
 
     bool running = false;
 
@@ -26,7 +32,7 @@ public class MessageWindow : MonoBehaviour
                 return;
             }
 
-            GetComponent<TextMesh>().text = message.Substring(0, cursor + 1);
+            textMesh.text = message.Substring(0, cursor + 1);
 
             if (prevCursor != cursor)
             {
@@ -34,7 +40,7 @@ public class MessageWindow : MonoBehaviour
                 char letter = message[cursor];
                 if (letter != 32 && letter != 10)
                 {
-                    GetComponent<AudioSource>().Play();
+                    audioSource.Play();
                 }
             }
         }
@@ -48,5 +54,3 @@ public class MessageWindow : MonoBehaviour
         prevCursor = -1;
     }
 }
-
-

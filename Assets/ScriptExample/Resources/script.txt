@@ -3,7 +3,7 @@ delay 500
 *start
 わたしを お城まで 連れて
 帰ってくださいますのね？
-riftgesture *yes, *no
+gesture *yes, *no
 
 *yes
 delay 300

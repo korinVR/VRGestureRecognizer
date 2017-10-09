@@ -13,7 +13,7 @@ public class ScriptEngine : MonoBehaviour
     string[] lines;
 
     string[] commands = {
-        "riftgesture",
+        "gesture",
         "delay",
         "goto"
     };
@@ -37,14 +37,12 @@ public class ScriptEngine : MonoBehaviour
     string yesLabel;
     string noLabel;
 
-    Dictionary<string, int> labels;
+    Dictionary<string, int> labels = new Dictionary<string, int>();
 
     void Start()
     {
-        TextAsset textAsset = Resources.Load("script") as TextAsset;
+        var textAsset = Resources.Load("script") as TextAsset;
         lines = textAsset.text.Split('\n');
-
-        labels = new Dictionary<string, int>();
 
         for (int i = 0; i < lines.Length; i++)
         {
@@ -73,7 +71,7 @@ public class ScriptEngine : MonoBehaviour
 
     string GetCommand(string line)
     {
-        foreach (string command in commands)
+        foreach (var command in commands)
         {
             if (line.StartsWith(command))
             {
@@ -85,10 +83,10 @@ public class ScriptEngine : MonoBehaviour
 
     public void NextCommand()
     {
-        string command = GetCommand(lines[cursor]);
+        var command = GetCommand(lines[cursor]);
         switch (command)
         {
-            case "riftgesture":
+            case "gesture":
                 var r = new Regex(@"^riftgesture\s+\*(\w+)\s*,\s*\*(\w+)$");
                 var m = r.Match(lines[cursor]);
 

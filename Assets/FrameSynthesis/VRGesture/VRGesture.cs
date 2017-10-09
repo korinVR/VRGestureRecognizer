@@ -25,19 +25,16 @@ namespace FrameSynthesis.VR
 
     public class VRGesture : MonoBehaviour
     {
-        LinkedList<Sample> samples;
+        [SerializeField]
+        float detectInterval = 0.5f;
+
+        LinkedList<Sample> samples = new LinkedList<Sample>();
         float waitTime = 0f;
-        const float detectInterval = 0.5f;
 
         public event Action NodHandler;
         public event Action HeadShakeHandler;
 
-        public VRGesture()
-        {
-            samples = new LinkedList<Sample>();
-        }
-
-        public void Update()
+        void Update()
         {
             // Recode orientation
             Quaternion q = InputTracking.GetLocalRotation(VRNode.Head);
@@ -55,8 +52,8 @@ namespace FrameSynthesis.VR
             }
             else
             {
-                DetectNod();
-                DetectHeadshake();
+                RecognizeNod();
+                RecognizeHeadshake();
             }
         }
 
@@ -81,7 +78,7 @@ namespace FrameSynthesis.VR
                                             sample.timestamp >= Time.time - endTime));
         }
 
-        void DetectNod()
+        void RecognizeNod()
         {
             try
             {
@@ -102,7 +99,7 @@ namespace FrameSynthesis.VR
             }
         }
 
-        void DetectHeadshake()
+        void RecognizeHeadshake()
         {
             try
             {
