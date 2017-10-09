@@ -52,7 +52,7 @@ namespace ScriptExample
             }
         }
 
-        public void OnShowMessage(string message)
+        void OnShowMessage(string message)
         {
             this.message = message;
             messageStartTime = Time.time;
