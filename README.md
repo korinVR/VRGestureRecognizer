@@ -1,23 +1,23 @@
-RiftGesture
-===========
-An experiment to recognize head gestures (nod and headshake) with Oculus Rift and Unity.
+VRGesture
+=========
+An experiment to recognize head gestures (nod and headshake) with VR headset
 
 # Requirements
 
-- Oculus Rift CV1/DK2
-- Unity 5.4.0
+- HTC Vive or Oculus Rift
+- Unity 2017.1.1f1
 
 # Scenes
 
-This project contains two scenes.
+This project contains two example scenes.
 
-### Test.unity
+### FrameSynthesis/VRGesture/Example/Example.unity
 
-A test scene to detect gestures. You can tweak DetectNod and DetectHeadshake functions in "Frame Synthesis/Rift Gesture/RiftGesture.cs."
+A test scene to recognize gestures. You can tweak RecognizeNod and RecognizeHeadshake functions in VRGesture.cs.
 
-### Script Example/Script Example.unity
+### ScriptExample/ScriptExample.unity
 
-A simple example to use the gesture detection. For some reason the script messages are written in Japanese. You can edit "Script Example/Resources/script.txt."
+A simple example to use the gesture recognition. For some reason the script messages are written in Japanese. You can edit "ScriptExample/Resources/script.txt."
 
 # License
 
