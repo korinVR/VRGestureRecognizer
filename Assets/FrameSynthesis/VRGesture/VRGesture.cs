@@ -26,7 +26,7 @@ namespace FrameSynthesis.VR
     public class VRGesture : MonoBehaviour
     {
         [SerializeField]
-        float detectInterval = 0.5f;
+        float recognitionInterval = 0.5f;
 
         public event Action NodHandler;
         public event Action HeadshakeHandler;
@@ -36,7 +36,7 @@ namespace FrameSynthesis.VR
 
         void Update()
         {
-            // Recode orientation
+            // Record orientation
             Quaternion q = InputTracking.GetLocalRotation(VRNode.Head);
 
             samples.AddFirst(new Sample(Time.time, q));
@@ -45,7 +45,7 @@ namespace FrameSynthesis.VR
                 samples.RemoveLast();
             }
 
-            // Detect gestures
+            // Recognize gestures
             if (waitTime > 0)
             {
                 waitTime -= Time.deltaTime;
@@ -90,7 +90,7 @@ namespace FrameSynthesis.VR
                     Mathf.Abs(current - basePos) < 5f)
                 {
                     if (NodHandler != null) { NodHandler.Invoke(); }
-                    waitTime = detectInterval;
+                    waitTime = recognitionInterval;
                 }
             }
             catch (InvalidOperationException)
@@ -112,7 +112,7 @@ namespace FrameSynthesis.VR
                     Mathf.Abs(current - basePos) < 5f)
                 {
                     if (HeadshakeHandler != null) { HeadshakeHandler.Invoke(); }
-                    waitTime = detectInterval;
+                    waitTime = recognitionInterval;
                 }
             }
             catch (InvalidOperationException)

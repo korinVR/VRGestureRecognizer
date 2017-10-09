@@ -8,9 +8,6 @@ namespace ScriptExample
 {
     public class ScriptEngine : MonoBehaviour
     {
-        [SerializeField]
-        MessageWindow messageWindow;
-
         public bool IsYesNoWaiting
         {
             get
