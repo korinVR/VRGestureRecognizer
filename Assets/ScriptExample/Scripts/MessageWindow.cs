@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace ScriptExample
 {
@@ -11,7 +12,7 @@ namespace ScriptExample
         float interval = 0.05f;
 
         [SerializeField]
-        TextMesh textMesh;
+        Text textMesh;
         [SerializeField]
         AudioSource audioSource;
 

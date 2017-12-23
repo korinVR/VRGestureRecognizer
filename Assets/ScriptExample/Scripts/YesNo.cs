@@ -10,9 +10,11 @@ namespace ScriptExample
         [SerializeField]
         ScriptEngine scriptEngine;
         [SerializeField]
-        AudioSource gestureSound;
+        AudioSource gestureSoundYes;
+        [SerializeField]
+        AudioSource gestureSoundNo;
 
-        void Start()
+		void Start()
         {
             vrGesture.NodHandler += OnNod;
             vrGesture.HeadshakeHandler += OnHeadshake;
@@ -23,7 +25,7 @@ namespace ScriptExample
             if (scriptEngine.IsYesNoWaiting)
             {
                 scriptEngine.AnswerYes();
-                gestureSound.Play();
+                gestureSoundYes.Play();
             }
         }
 
@@ -32,7 +34,7 @@ namespace ScriptExample
             if (scriptEngine.IsYesNoWaiting)
             {
                 scriptEngine.AnswerNo();
-                gestureSound.Play();
+                gestureSoundNo.Play();
             }
         }
     }
