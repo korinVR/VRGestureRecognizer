@@ -9,11 +9,11 @@ public class FollowTarget : MonoBehaviour {
 
 	private Vector3 TargetPosition { get { return m_Target.position + new Vector3(m_Target.forward.x, 0, m_Target.forward.z) * m_DistanceFromTarget; } }
 
-	private void Start() { m_FreePosition = transform.position; }
+	private void Start() { m_FreePosition = transform.position = TargetPosition; }
 
 	private void LateUpdate() {
 		m_FreePosition = Vector3.Lerp(m_FreePosition, TargetPosition, m_Speed);
 		Vector3 direction = m_FreePosition - m_Target.position;
-		transform.position = direction.normalized * m_DistanceFromTarget;
+		transform.position = m_Target.position + direction.normalized * m_DistanceFromTarget;
 	}
 }
