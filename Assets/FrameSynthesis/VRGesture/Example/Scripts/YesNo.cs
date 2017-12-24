@@ -34,7 +34,7 @@ namespace FrameSynthesis.VR.Example
             message.transform.localPosition = new Vector3(0f, 0f, 10f);
             message.transform.localRotation = Quaternion.identity;
             message.SendMessage("SetText", text);
-			      message.transform.SetParent(null);
+            message.transform.SetParent(null);
         }
     }
 }
