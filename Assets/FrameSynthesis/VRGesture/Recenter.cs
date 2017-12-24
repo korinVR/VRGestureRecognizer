@@ -7,14 +7,14 @@ namespace FrameSynthesis.VR
     {
         void Start()
         {
-            VRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
+            UnityEngine.XR.XRDevice.SetTrackingSpaceType(UnityEngine.XR.TrackingSpaceType.Stationary);
         }
 
         void Update()
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                InputTracking.Recenter();
+                UnityEngine.XR.InputTracking.Recenter();
             }
         }
     }
