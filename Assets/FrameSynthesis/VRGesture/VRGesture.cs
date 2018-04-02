@@ -37,7 +37,7 @@ namespace FrameSynthesis.VR
         void Update()
         {
             // Record orientation
-            Quaternion q = InputTracking.GetLocalRotation(VRNode.Head);
+            Quaternion q = UnityEngine.XR.InputTracking.GetLocalRotation(UnityEngine.XR.XRNode.Head);
 
             samples.AddFirst(new Sample(Time.time, q));
             if (samples.Count >= 120)
