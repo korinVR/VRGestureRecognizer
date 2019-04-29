@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
-using UnityEngine.VR;
+using UnityEngine.XR;
 
 namespace FrameSynthesis.VR
 {
-    public class Recenter : MonoBehaviour
+    public class Recenterer : MonoBehaviour
     {
         void Start()
         {
-            VRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
+            XRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
         }
 
         void Update()
