@@ -35,7 +35,7 @@ namespace FrameSynthesis.VR
 
         public LinkedList<PoseSample> PoseSamples { get; private set; }
 
-        float waitTime;
+        float prevGestureTime;
 
         void Awake()
         {
@@ -59,12 +59,6 @@ namespace FrameSynthesis.VR
             }
 
             // Recognize gestures
-            if (waitTime > 0)
-            {
-                waitTime -= Time.deltaTime;
-                return;
-            }
-
             RecognizeNod();
             RecognizeHeadshake();
         }
@@ -86,8 +80,11 @@ namespace FrameSynthesis.VR
                 if (maxPitch - basePitch > 10f &&
                     Mathf.Abs(pitch - basePitch) < 5f)
                 {
-                    NodHandler?.Invoke();
-                    waitTime = recognitionInterval;
+                    if (prevGestureTime < Time.time - recognitionInterval)
+                    {
+                        prevGestureTime = Time.time;
+                        NodHandler?.Invoke();
+                    }
                 }
             }
             catch (InvalidOperationException)
@@ -108,8 +105,11 @@ namespace FrameSynthesis.VR
                 if ((maxYaw - baseYaw > 10f || baseYaw - minYaw > 10f) &&
                     Mathf.Abs(yaw - baseYaw) < 5f)
                 {
-                    HeadshakeHandler?.Invoke();
-                    waitTime = recognitionInterval;
+                    if (prevGestureTime < Time.time - recognitionInterval)
+                    {
+                        prevGestureTime = Time.time;
+                        HeadshakeHandler?.Invoke();
+                    }
                 }
             }
             catch (InvalidOperationException)
