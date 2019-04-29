@@ -7,12 +7,6 @@ namespace FrameSynthesis.VR
         [SerializeField]
         Material material;
 
-        float ProjectDegreeTo01(float angle)
-        {
-            const float scale = 180f;
-            return MyMath.LinearMap(MyMath.WrapDegree(angle), -scale, scale, 0f, 1f);
-        }
-
         void OnPostRender()
         {
             material.SetPass(0);
@@ -26,25 +20,59 @@ namespace FrameSynthesis.VR
             GL.Vertex3(0.5f, 0f, 0f);
             GL.Vertex3(0.5f, 1f, 0f);
 
-            float[] timestamps;
-            Quaternion[] orientations;
-            VRGestureRecognizer.Current.GetGraphEntries(out timestamps, out orientations);
+            var poseSamples = VRGestureRecognizer.Current.PoseSamples;
 
             GL.Color(Color.red);
-            for (int i = 0; i < timestamps.Length - 1; i++)
+
+            var prevGraphPosition = Vector2.zero;
+            var i = 0;
+            foreach (var poseSample in poseSamples)
             {
-                GL.Vertex3(Time.time - timestamps[i], ProjectDegreeTo01(orientations[i].eulerAngles.x), 0f);
-                GL.Vertex3(Time.time - timestamps[i + 1], ProjectDegreeTo01(orientations[i + 1].eulerAngles.x), 0f);
+                var graphPosition = GetGraphPositionFromPoseSamplePitch(poseSample);
+                if (i > 0)
+                {
+                    GL.Vertex3(prevGraphPosition.x, prevGraphPosition.y, 0f);
+                    GL.Vertex3(graphPosition.x, graphPosition.y, 0f);
+                }
+                prevGraphPosition = graphPosition;
+                i++;
             }
 
             GL.Color(Color.green);
-            for (int i = 0; i < timestamps.Length - 1; i++)
+
+            i = 0;
+            foreach (var poseSample in poseSamples)
             {
-                GL.Vertex3(ProjectDegreeTo01(orientations[i].eulerAngles.y), Time.time - timestamps[i], 0f);
-                GL.Vertex3(ProjectDegreeTo01(orientations[i + 1].eulerAngles.y), Time.time - timestamps[i + 1], 0f);
+                var graphPosition = GetGraphPositionFromPoseSampleYaw(poseSample);
+                if (i > 0)
+                {
+                    GL.Vertex3(prevGraphPosition.x, prevGraphPosition.y, 0f);
+                    GL.Vertex3(graphPosition.x, graphPosition.y, 0f);
+                }
+                prevGraphPosition = graphPosition;
+                i++;
             }
 
             GL.End();
+        }
+
+        Vector2 GetGraphPositionFromPoseSamplePitch(PoseSample poseSample)
+        {
+            float x = Time.time - poseSample.timestamp;
+            float y = ProjectDegreeTo01(poseSample.orientation.eulerAngles.x);
+            return new Vector2(x, y);
+        }
+
+        Vector2 GetGraphPositionFromPoseSampleYaw(PoseSample poseSample)
+        {
+            float x = ProjectDegreeTo01(poseSample.orientation.eulerAngles.y);
+            float y = Time.time - poseSample.timestamp;
+            return new Vector2(x, y);
+        }
+
+        float ProjectDegreeTo01(float degree)
+        {
+            return MyMath.LinearMap(MyMath.WrapDegree(degree), -180f, 180f, 0f, 1f);
         }
     }
 }

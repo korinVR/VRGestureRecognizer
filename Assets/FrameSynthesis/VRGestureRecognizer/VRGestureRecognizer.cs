@@ -6,13 +6,13 @@ using System.Linq;
 
 namespace FrameSynthesis.VR
 {
-    struct Sample
+    public struct PoseSample
     {
         public float timestamp;
         public Quaternion orientation;
         public Vector3 eulerAngles;
 
-        public Sample(float timestamp, Quaternion orientation)
+        public PoseSample(float timestamp, Quaternion orientation)
         {
             this.timestamp = timestamp;
             this.orientation = orientation;
@@ -33,7 +33,8 @@ namespace FrameSynthesis.VR
         public event Action NodHandler;
         public event Action HeadshakeHandler;
 
-        LinkedList<Sample> samples = new LinkedList<Sample>();
+        public LinkedList<PoseSample> PoseSamples { get; private set; }
+
         float waitTime;
 
         void Awake()
@@ -41,15 +42,20 @@ namespace FrameSynthesis.VR
             Current = this;
         }
 
+        void Start()
+        {
+            PoseSamples = new LinkedList<PoseSample>();
+        }
+
         void Update()
         {
             var q = InputTracking.GetLocalRotation(XRNode.Head);
 
             // Record orientation
-            samples.AddFirst(new Sample(Time.time, q));
-            if (samples.Count >= 120)
+            PoseSamples.AddFirst(new PoseSample(Time.time, q));
+            if (PoseSamples.Count >= 120)
             {
-                samples.RemoveLast();
+                PoseSamples.RemoveLast();
             }
 
             // Recognize gestures
@@ -63,24 +69,9 @@ namespace FrameSynthesis.VR
             RecognizeHeadshake();
         }
 
-        public void GetGraphEntries(out float[] timestamps, out Quaternion[] orientations)
+        IEnumerable<PoseSample> Range(float startTime, float endTime)
         {
-            var size = samples.Count;
-            timestamps = new float[size];
-            orientations = new Quaternion[size];
-
-            var index = 0;
-            foreach (var sample in samples)
-            {
-                timestamps[index] = sample.timestamp;
-                orientations[index] = sample.orientation;
-                index++;
-            }
-        }
-
-        IEnumerable<Sample> Range(float startTime, float endTime)
-        {
-            return samples.Where(sample => (sample.timestamp < Time.time - startTime &&
+            return PoseSamples.Where(sample => (sample.timestamp < Time.time - startTime &&
                                             sample.timestamp >= Time.time - endTime));
         }
 
@@ -90,7 +81,7 @@ namespace FrameSynthesis.VR
             {
                 var basePos = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.x);
                 var xMax = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.x);
-                var current = samples.First().eulerAngles.x;
+                var current = PoseSamples.First().eulerAngles.x;
 
                 if (xMax - basePos > 10f &&
                     Mathf.Abs(current - basePos) < 5f)
@@ -112,7 +103,7 @@ namespace FrameSynthesis.VR
                 var basePos = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.y);
                 var yMax = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.y);
                 var yMin = Range(0.01f, 0.2f).Min(sample => sample.eulerAngles.y);
-                var current = samples.First().eulerAngles.y;
+                var current = PoseSamples.First().eulerAngles.y;
 
                 if ((yMax - basePos > 10f || basePos - yMin > 10f) &&
                     Mathf.Abs(current - basePos) < 5f)
