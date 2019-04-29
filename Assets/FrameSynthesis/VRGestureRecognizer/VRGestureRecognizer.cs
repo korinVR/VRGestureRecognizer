@@ -33,7 +33,7 @@ namespace FrameSynthesis.VR
         public event Action NodHandler;
         public event Action HeadshakeHandler;
 
-        public LinkedList<PoseSample> PoseSamples { get; private set; }
+        public Queue<PoseSample> PoseSamples { get; private set; }
 
         float prevGestureTime;
 
@@ -44,7 +44,7 @@ namespace FrameSynthesis.VR
 
         void Start()
         {
-            PoseSamples = new LinkedList<PoseSample>();
+            PoseSamples = new Queue<PoseSample>();
         }
 
         void Update()
@@ -52,10 +52,10 @@ namespace FrameSynthesis.VR
             var orientation = InputTracking.GetLocalRotation(XRNode.Head);
 
             // Record orientation
-            PoseSamples.AddFirst(new PoseSample(Time.time, orientation));
+            PoseSamples.Enqueue(new PoseSample(Time.time, orientation));
             if (PoseSamples.Count >= 120)
             {
-                PoseSamples.RemoveLast();
+                PoseSamples.Dequeue();
             }
 
             // Recognize gestures
