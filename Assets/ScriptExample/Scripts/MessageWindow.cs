@@ -15,7 +15,7 @@ namespace ScriptExample
         [SerializeField]
         AudioSource audioSource;
 
-        bool running = false;
+        bool running;
 
         string message;
         float messageStartTime;
@@ -31,7 +31,7 @@ namespace ScriptExample
         {
             if (!running) return;
 
-            int cursor = (int)((Time.time - messageStartTime) / interval);
+            var cursor = (int)((Time.time - messageStartTime) / interval);
             if (cursor >= message.Length)
             {
                 running = false;
@@ -44,7 +44,7 @@ namespace ScriptExample
             if (prevCursor != cursor)
             {
                 prevCursor = cursor;
-                char letter = message[cursor];
+                var letter = message[cursor];
                 if (letter != 32 && letter != 10)
                 {
                     audioSource.Play();

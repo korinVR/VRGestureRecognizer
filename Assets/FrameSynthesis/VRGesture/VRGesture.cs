@@ -18,8 +18,8 @@ namespace FrameSynthesis.VR
             this.orientation = orientation;
 
             eulerAngles = orientation.eulerAngles;
-            eulerAngles.x = MyMath.WrapAngle(eulerAngles.x);
-            eulerAngles.y = MyMath.WrapAngle(eulerAngles.y);
+            eulerAngles.x = MyMath.WrapDegree(eulerAngles.x);
+            eulerAngles.y = MyMath.WrapDegree(eulerAngles.y);
         }
     }
 
@@ -32,13 +32,13 @@ namespace FrameSynthesis.VR
         public event Action HeadshakeHandler;
 
         LinkedList<Sample> samples = new LinkedList<Sample>();
-        float waitTime = 0f;
+        float waitTime;
 
         void Update()
         {
-            // Record orientation
-            Quaternion q = InputTracking.GetLocalRotation(XRNode.Head);
+            var q = InputTracking.GetLocalRotation(XRNode.Head);
 
+            // Record orientation
             samples.AddFirst(new Sample(Time.time, q));
             if (samples.Count >= 120)
             {
@@ -49,21 +49,20 @@ namespace FrameSynthesis.VR
             if (waitTime > 0)
             {
                 waitTime -= Time.deltaTime;
+                return;
             }
-            else
-            {
-                RecognizeNod();
-                RecognizeHeadshake();
-            }
+
+            RecognizeNod();
+            RecognizeHeadshake();
         }
 
         public void GetGraphEntries(out float[] timestamps, out Quaternion[] orientations)
         {
-            int size = samples.Count;
+            var size = samples.Count;
             timestamps = new float[size];
             orientations = new Quaternion[size];
 
-            int index = 0;
+            var index = 0;
             foreach (var sample in samples)
             {
                 timestamps[index] = sample.timestamp;
@@ -82,14 +81,14 @@ namespace FrameSynthesis.VR
         {
             try
             {
-                float basePos = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.x);
-                float xMax = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.x);
-                float current = samples.First().eulerAngles.x;
+                var basePos = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.x);
+                var xMax = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.x);
+                var current = samples.First().eulerAngles.x;
 
                 if (xMax - basePos > 10f &&
                     Mathf.Abs(current - basePos) < 5f)
                 {
-                    if (NodHandler != null) { NodHandler.Invoke(); }
+                    NodHandler?.Invoke();
                     waitTime = recognitionInterval;
                 }
             }
@@ -103,15 +102,15 @@ namespace FrameSynthesis.VR
         {
             try
             {
-                float basePos = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.y);
-                float yMax = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.y);
-                float yMin = Range(0.01f, 0.2f).Min(sample => sample.eulerAngles.y);
-                float current = samples.First().eulerAngles.y;
+                var basePos = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.y);
+                var yMax = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.y);
+                var yMin = Range(0.01f, 0.2f).Min(sample => sample.eulerAngles.y);
+                var current = samples.First().eulerAngles.y;
 
                 if ((yMax - basePos > 10f || basePos - yMin > 10f) &&
                     Mathf.Abs(current - basePos) < 5f)
                 {
-                    if (HeadshakeHandler != null) { HeadshakeHandler.Invoke(); }
+                    HeadshakeHandler?.Invoke();
                     waitTime = recognitionInterval;
                 }
             }

@@ -2,26 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using FrameSynthesis.VR;
 
 namespace ScriptExample
 {
     public class ScriptEngine : MonoBehaviour
     {
-        public bool IsYesNoWaiting
-        {
-            get
-            {
-                return state == State.YesNoWaiting;
-            }
-        }
+        public bool IsWaitingYesNo => state == State.WaitingYesNo;
 
         public event Action<string> ShowMessageHandler;
 
-        int cursor = 0;
+        int cursor;
         string[] lines;
 
-        string[] commands = {
+        readonly string[] commands = {
             "gesture",
             "delay",
             "goto"
@@ -30,7 +23,7 @@ namespace ScriptExample
         public enum State
         {
             Normal,
-            YesNoWaiting,
+            WaitingYesNo,
         }
 
         State state;
@@ -38,7 +31,7 @@ namespace ScriptExample
         string yesLabel;
         string noLabel;
 
-        Dictionary<string, int> labels = new Dictionary<string, int>();
+        readonly Dictionary<string, int> labels = new Dictionary<string, int>();
 
         void Start()
         {
@@ -48,7 +41,7 @@ namespace ScriptExample
             for (int i = 0; i < lines.Length; i++)
             {
                 // Trim
-                string line = lines[i].Trim();
+                var line = lines[i].Trim();
 
                 // Comment
                 if (line.StartsWith(";"))
@@ -95,7 +88,7 @@ namespace ScriptExample
                     {
                         yesLabel = m.Groups[1].ToString();
                         noLabel = m.Groups[2].ToString();
-                        state = State.YesNoWaiting;
+                        state = State.WaitingYesNo;
                         return;
                     }
                     // Syntax error
@@ -108,8 +101,8 @@ namespace ScriptExample
                     if (m.Groups.Count == 2)
                     {
                         cursor++;
-                        int time = int.Parse(m.Groups[1].ToString());
-                        Invoke("NextCommand", time / 1000f);
+                        var time = int.Parse(m.Groups[1].ToString());
+                        Invoke(nameof(NextCommand), time / 1000f);
                         return;
                     }
                     // Syntax error
@@ -121,7 +114,7 @@ namespace ScriptExample
 
                     if (m.Groups.Count == 2)
                     {
-                        string label = m.Groups[1].ToString();
+                        var label = m.Groups[1].ToString();
                         GoTo(label);
                         return;
                     }
@@ -129,7 +122,7 @@ namespace ScriptExample
                     throw new Exception();
             }
 
-            string message = "";
+            var message = "";
 
             while (GetCommand(lines[cursor]) == "")
             {
@@ -141,7 +134,7 @@ namespace ScriptExample
                 cursor++;
             }
 
-            if (ShowMessageHandler != null) { ShowMessageHandler.Invoke(message); }
+            ShowMessageHandler?.Invoke(message);
         }
 
         public void GoTo(string label)
@@ -152,7 +145,7 @@ namespace ScriptExample
 
         public void AnswerYes()
         {
-            if (state == State.YesNoWaiting)
+            if (state == State.WaitingYesNo)
             {
                 state = State.Normal;
                 GoTo(yesLabel);
@@ -161,7 +154,7 @@ namespace ScriptExample
 
         public void AnswerNo()
         {
-            if (state == State.YesNoWaiting)
+            if (state == State.WaitingYesNo)
             {
                 state = State.Normal;
                 GoTo(noLabel);

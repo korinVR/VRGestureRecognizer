@@ -9,7 +9,7 @@ namespace FrameSynthesis
             return d0 + (value - s0) * (d1 - d0) / (s1 - s0);
         }
 
-        public static float WrapAngle(float degree)
+        public static float WrapDegree(float degree)
         {
             if (degree > 180f)
             {

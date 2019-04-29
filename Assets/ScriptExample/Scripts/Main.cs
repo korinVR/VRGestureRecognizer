@@ -3,7 +3,7 @@ using FrameSynthesis.VR;
 
 namespace ScriptExample
 {
-    public class YesNo : MonoBehaviour
+    public class Main : MonoBehaviour
     {
         [SerializeField]
         VRGesture vrGesture;
@@ -20,7 +20,7 @@ namespace ScriptExample
 
         void OnNod()
         {
-            if (scriptEngine.IsYesNoWaiting)
+            if (scriptEngine.IsWaitingYesNo)
             {
                 scriptEngine.AnswerYes();
                 gestureSound.Play();
@@ -29,7 +29,7 @@ namespace ScriptExample
 
         void OnHeadshake()
         {
-            if (scriptEngine.IsYesNoWaiting)
+            if (scriptEngine.IsWaitingYesNo)
             {
                 scriptEngine.AnswerNo();
                 gestureSound.Play();

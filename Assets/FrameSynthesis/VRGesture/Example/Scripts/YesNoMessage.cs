@@ -3,8 +3,11 @@
 namespace FrameSynthesis.VR.Example
 {
     [RequireComponent(typeof(TextMesh))]
-    public class Message : MonoBehaviour
+    public class YesNoMessage : MonoBehaviour
     {
+        const string YesText = "Yes!";
+        const string NoText = "No!";
+
         [SerializeField]
         float lifetime = 1f;
         [SerializeField]
@@ -15,9 +18,9 @@ namespace FrameSynthesis.VR.Example
             Destroy(gameObject, lifetime);
         }
 
-        public void SetText(string text)
+        public void Initialize(bool yesNo)
         {
-            GetComponent<TextMesh>().text = text;
+            GetComponent<TextMesh>().text = yesNo ? YesText : NoText;
         }
 
         void Update()

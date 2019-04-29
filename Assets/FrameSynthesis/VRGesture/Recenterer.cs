@@ -3,7 +3,7 @@ using UnityEngine.XR;
 
 namespace FrameSynthesis.VR
 {
-    public class Recenter : MonoBehaviour
+    public class Recenterer : MonoBehaviour
     {
         void Start()
         {
