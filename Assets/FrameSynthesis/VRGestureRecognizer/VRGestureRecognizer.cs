@@ -63,22 +63,23 @@ namespace FrameSynthesis.VR
             RecognizeHeadshake();
         }
 
-        IEnumerable<PoseSample> Range(float startTime, float endTime)
+        IEnumerable<PoseSample> PoseSamplesWithin(float startTime, float endTime)
         {
-            return PoseSamples.Where(sample => (sample.timestamp < Time.time - startTime &&
-                                            sample.timestamp >= Time.time - endTime));
+            return PoseSamples.Where(sample => 
+                sample.timestamp < Time.time - startTime && 
+                sample.timestamp >= Time.time - endTime);
         }
 
         void RecognizeNod()
         {
             try
             {
-                var basePitch = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.x);
-                var maxPitch = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.x);
+                var averagePitch = PoseSamplesWithin(0.2f, 0.4f).Average(sample => sample.eulerAngles.x);
+                var maxPitch = PoseSamplesWithin(0.01f, 0.2f).Max(sample => sample.eulerAngles.x);
                 var pitch = PoseSamples.First().eulerAngles.x;
 
-                if (maxPitch - basePitch > 10f &&
-                    Mathf.Abs(pitch - basePitch) < 5f)
+                if (maxPitch - averagePitch > 10f &&
+                    Mathf.Abs(pitch - averagePitch) < 5f)
                 {
                     if (prevGestureTime < Time.time - recognitionInterval)
                     {
@@ -97,13 +98,13 @@ namespace FrameSynthesis.VR
         {
             try
             {
-                var baseYaw = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.y);
-                var maxYaw = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.y);
-                var minYaw = Range(0.01f, 0.2f).Min(sample => sample.eulerAngles.y);
+                var averageYaw = PoseSamplesWithin(0.2f, 0.4f).Average(sample => sample.eulerAngles.y);
+                var maxYaw = PoseSamplesWithin(0.01f, 0.2f).Max(sample => sample.eulerAngles.y);
+                var minYaw = PoseSamplesWithin(0.01f, 0.2f).Min(sample => sample.eulerAngles.y);
                 var yaw = PoseSamples.First().eulerAngles.y;
 
-                if ((maxYaw - baseYaw > 10f || baseYaw - minYaw > 10f) &&
-                    Mathf.Abs(yaw - baseYaw) < 5f)
+                if ((maxYaw - averageYaw > 10f || averageYaw - minYaw > 10f) &&
+                    Mathf.Abs(yaw - averageYaw) < 5f)
                 {
                     if (prevGestureTime < Time.time - recognitionInterval)
                     {
