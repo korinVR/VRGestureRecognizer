@@ -6,8 +6,6 @@ namespace FrameSynthesis.VR
     {
         [SerializeField]
         Material material;
-        [SerializeField]
-        VRGesture vrGesture;
 
         float ProjectDegreeTo01(float angle)
         {
@@ -30,7 +28,7 @@ namespace FrameSynthesis.VR
 
             float[] timestamps;
             Quaternion[] orientations;
-            vrGesture.GetGraphEntries(out timestamps, out orientations);
+            VRGestureRecognizer.Current.GetGraphEntries(out timestamps, out orientations);
 
             GL.Color(Color.red);
             for (int i = 0; i < timestamps.Length - 1; i++)

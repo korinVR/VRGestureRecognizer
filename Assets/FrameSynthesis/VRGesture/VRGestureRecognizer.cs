@@ -23,8 +23,10 @@ namespace FrameSynthesis.VR
         }
     }
 
-    public class VRGesture : MonoBehaviour
+    public class VRGestureRecognizer : MonoBehaviour
     {
+        public static VRGestureRecognizer Current { get; private set; }
+
         [SerializeField]
         float recognitionInterval = 0.5f;
 
@@ -33,6 +35,11 @@ namespace FrameSynthesis.VR
 
         LinkedList<Sample> samples = new LinkedList<Sample>();
         float waitTime;
+
+        void Awake()
+        {
+            Current = this;
+        }
 
         void Update()
         {

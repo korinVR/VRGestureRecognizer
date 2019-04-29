@@ -6,16 +6,14 @@ namespace ScriptExample
     public class Main : MonoBehaviour
     {
         [SerializeField]
-        VRGesture vrGesture;
-        [SerializeField]
         ScriptEngine scriptEngine;
         [SerializeField]
         AudioSource gestureSound;
 
         void Start()
         {
-            vrGesture.NodHandler += OnNod;
-            vrGesture.HeadshakeHandler += OnHeadshake;
+            VRGestureRecognizer.Current.NodHandler += OnNod;
+            VRGestureRecognizer.Current.HeadshakeHandler += OnHeadshake;
         }
 
         void OnNod()

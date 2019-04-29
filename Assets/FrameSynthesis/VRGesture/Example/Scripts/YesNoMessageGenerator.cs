@@ -5,15 +5,12 @@ namespace FrameSynthesis.VR.Example
     public class YesNoMessageGenerator : MonoBehaviour
     {
         [SerializeField]
-        VRGesture vrGesture;
-
-        [SerializeField]
-        GameObject messagePrefab;
+        GameObject yesNoMessagePrefab;
 
         void Start()
         {
-            vrGesture.NodHandler += OnNod;
-            vrGesture.HeadshakeHandler += OnHeadshake;
+            VRGestureRecognizer.Current.NodHandler += OnNod;
+            VRGestureRecognizer.Current.HeadshakeHandler += OnHeadshake;
         }
 
         void OnNod()
@@ -28,7 +25,7 @@ namespace FrameSynthesis.VR.Example
 
         void InstantiateYesNoMessage(bool yesNo)
         {
-            var go = Instantiate(messagePrefab);
+            var go = Instantiate(yesNoMessagePrefab);
             go.GetComponent<YesNoMessage>().Initialize(yesNo);
 
             go.transform.SetParent(Camera.main.transform);
