@@ -49,10 +49,10 @@ namespace FrameSynthesis.VR
 
         void Update()
         {
-            var q = InputTracking.GetLocalRotation(XRNode.Head);
+            var orientation = InputTracking.GetLocalRotation(XRNode.Head);
 
             // Record orientation
-            PoseSamples.AddFirst(new PoseSample(Time.time, q));
+            PoseSamples.AddFirst(new PoseSample(Time.time, orientation));
             if (PoseSamples.Count >= 120)
             {
                 PoseSamples.RemoveLast();
@@ -79,12 +79,12 @@ namespace FrameSynthesis.VR
         {
             try
             {
-                var basePos = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.x);
-                var xMax = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.x);
-                var current = PoseSamples.First().eulerAngles.x;
+                var basePitch = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.x);
+                var maxPitch = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.x);
+                var pitch = PoseSamples.First().eulerAngles.x;
 
-                if (xMax - basePos > 10f &&
-                    Mathf.Abs(current - basePos) < 5f)
+                if (maxPitch - basePitch > 10f &&
+                    Mathf.Abs(pitch - basePitch) < 5f)
                 {
                     NodHandler?.Invoke();
                     waitTime = recognitionInterval;
@@ -100,13 +100,13 @@ namespace FrameSynthesis.VR
         {
             try
             {
-                var basePos = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.y);
-                var yMax = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.y);
-                var yMin = Range(0.01f, 0.2f).Min(sample => sample.eulerAngles.y);
-                var current = PoseSamples.First().eulerAngles.y;
+                var baseYaw = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.y);
+                var maxYaw = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.y);
+                var minYaw = Range(0.01f, 0.2f).Min(sample => sample.eulerAngles.y);
+                var yaw = PoseSamples.First().eulerAngles.y;
 
-                if ((yMax - basePos > 10f || basePos - yMin > 10f) &&
-                    Mathf.Abs(current - basePos) < 5f)
+                if ((maxYaw - baseYaw > 10f || baseYaw - minYaw > 10f) &&
+                    Mathf.Abs(yaw - baseYaw) < 5f)
                 {
                     HeadshakeHandler?.Invoke();
                     waitTime = recognitionInterval;
