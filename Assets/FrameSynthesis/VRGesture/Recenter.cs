@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.VR;
+using UnityEngine.XR;
 
 namespace FrameSynthesis.VR
 {
@@ -7,7 +7,7 @@ namespace FrameSynthesis.VR
     {
         void Start()
         {
-            VRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
+            XRDevice.SetTrackingSpaceType(TrackingSpaceType.Stationary);
         }
 
         void Update()

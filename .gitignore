@@ -6,6 +6,7 @@
 # All platforms
 /Library
 /Temp
+/obj
 *.csproj
 *.pidb
 *.unityproj
@@ -13,7 +14,4 @@
 *.userprefs
 
 /.vs
-
-/Releases
-/Resources
 
