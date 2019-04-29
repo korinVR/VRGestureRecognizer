@@ -38,7 +38,7 @@ namespace ScriptExample
             var textAsset = Resources.Load("script") as TextAsset;
             lines = textAsset.text.Split('\n');
 
-            for (int i = 0; i < lines.Length; i++)
+            for (var i = 0; i < lines.Length; i++)
             {
                 // Trim
                 var line = lines[i].Trim();
@@ -91,8 +91,7 @@ namespace ScriptExample
                         state = State.WaitingYesNo;
                         return;
                     }
-                    // Syntax error
-                    throw new Exception();
+                    throw new Exception("Syntax error");
 
                 case "delay":
                     r = new Regex(@"^delay\s+(\d+)$");
@@ -105,8 +104,7 @@ namespace ScriptExample
                         Invoke(nameof(NextCommand), time / 1000f);
                         return;
                     }
-                    // Syntax error
-                    throw new Exception();
+                    throw new Exception("Syntax error");
 
                 case "goto":
                     r = new Regex(@"^goto\s+\*(\w+)$");
@@ -118,8 +116,7 @@ namespace ScriptExample
                         GoTo(label);
                         return;
                     }
-                    // Syntax error
-                    throw new Exception();
+                    throw new Exception("Syntax error");
             }
 
             var message = "";

@@ -13,7 +13,7 @@ This project contains two example scenes.
 
 ### FrameSynthesis/VRGestureRegornizer/Example/Example.unity
 
-A test scene to recognize gestures. You can tweak RecognizeNod and RecognizeHeadshake functions in VRGestureRecogniser.cs.
+A test scene to recognize gestures. You can tweak RecognizeNod and RecognizeHeadshake functions in VRGestureRecognizer.cs.
 
 ### ScriptExample/ScriptExample.unity
 

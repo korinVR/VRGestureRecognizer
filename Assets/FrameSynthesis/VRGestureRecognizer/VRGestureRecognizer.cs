@@ -33,18 +33,13 @@ namespace FrameSynthesis.VR
         public event Action NodHandler;
         public event Action HeadshakeHandler;
 
-        public Queue<PoseSample> PoseSamples { get; private set; }
+        public Queue<PoseSample> PoseSamples { get; } = new Queue<PoseSample>();
 
         float prevGestureTime;
 
         void Awake()
         {
             Current = this;
-        }
-
-        void Start()
-        {
-            PoseSamples = new Queue<PoseSample>();
         }
 
         void Update()
@@ -90,7 +85,7 @@ namespace FrameSynthesis.VR
             }
             catch (InvalidOperationException)
             {
-                // Range contains no entry
+                // PoseSamplesWithin contains no entry
             }
         }
 
@@ -115,7 +110,7 @@ namespace FrameSynthesis.VR
             }
             catch (InvalidOperationException)
             {
-                // Range contains no entry
+                // PoseSamplesWithin contains no entry
             }
         }
     }
