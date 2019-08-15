@@ -81,7 +81,7 @@ namespace ScriptExample
             switch (command)
             {
                 case "gesture":
-                    var r = new Regex(@"^gesture\s+\*(\w+)\s*,\s*\*(\w+)$");
+                    var r = new Regex(@"^gesture\s+\*([\w-]+)\s*,\s*\*([\w-]+)$");
                     var m = r.Match(lines[cursor]);
 
                     if (m.Groups.Count == 3)

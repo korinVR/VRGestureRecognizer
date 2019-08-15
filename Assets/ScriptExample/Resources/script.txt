@@ -1,6 +1,11 @@
 delay 500
 
 *start
+あなたは日本語を話せますか？
+(Do you speak Japanese?)
+gesture *start-ja, *start-en
+
+*start-ja
 わたしを お城まで 連れて
 帰ってくださいますのね？
 gesture *yes, *no
@@ -15,6 +20,22 @@ goto *start
 *no
 delay 300
 そんな ひどい…。
+delay 1500
+goto *start
+
+*start-en
+Would you please bring me to your castle?
+gesture *yes-en, *no-en
+
+*yes-en
+delay 300
+Yay! I'm glad.
+delay 1500
+goto *start
+
+*no-en
+delay 300
+Aw... Why not? *pout*
 delay 1500
 goto *start
 
