@@ -58,7 +58,7 @@ namespace FrameSynthesis.VR
             RecognizeHeadshake();
         }
 
-        IEnumerable<PoseSample> PoseSamplesWithin(float startTime, float endTime)
+        IEnumerable<PoseSample> Ramge(float startTime, float endTime)
         {
             return PoseSamples.Where(sample => 
                 sample.timestamp < Time.time - startTime && 
@@ -69,8 +69,8 @@ namespace FrameSynthesis.VR
         {
             try
             {
-                var averagePitch = PoseSamplesWithin(0.2f, 0.4f).Average(sample => sample.eulerAngles.x);
-                var maxPitch = PoseSamplesWithin(0.01f, 0.2f).Max(sample => sample.eulerAngles.x);
+                var averagePitch = Ramge(0.2f, 0.4f).Average(sample => sample.eulerAngles.x);
+                var maxPitch = Ramge(0.01f, 0.2f).Max(sample => sample.eulerAngles.x);
                 var pitch = PoseSamples.First().eulerAngles.x;
 
                 if (maxPitch - averagePitch > 10f &&
@@ -93,9 +93,9 @@ namespace FrameSynthesis.VR
         {
             try
             {
-                var averageYaw = PoseSamplesWithin(0.2f, 0.4f).Average(sample => sample.eulerAngles.y);
-                var maxYaw = PoseSamplesWithin(0.01f, 0.2f).Max(sample => sample.eulerAngles.y);
-                var minYaw = PoseSamplesWithin(0.01f, 0.2f).Min(sample => sample.eulerAngles.y);
+                var averageYaw = Ramge(0.2f, 0.4f).Average(sample => sample.eulerAngles.y);
+                var maxYaw = Ramge(0.01f, 0.2f).Max(sample => sample.eulerAngles.y);
+                var minYaw = Ramge(0.01f, 0.2f).Min(sample => sample.eulerAngles.y);
                 var yaw = PoseSamples.First().eulerAngles.y;
 
                 if ((maxYaw - averageYaw > 10f || averageYaw - minYaw > 10f) &&

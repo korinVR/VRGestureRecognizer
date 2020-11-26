@@ -58,15 +58,15 @@ namespace FrameSynthesis.VR
 
         Vector2 GetGraphPositionFromPoseSamplePitch(PoseSample poseSample)
         {
-            float x = Time.time - poseSample.timestamp;
-            float y = ProjectDegreeTo01(poseSample.orientation.eulerAngles.x);
+            var x = Time.time - poseSample.timestamp;
+            var y = ProjectDegreeTo01(poseSample.orientation.eulerAngles.x);
             return new Vector2(x, y);
         }
 
         Vector2 GetGraphPositionFromPoseSampleYaw(PoseSample poseSample)
         {
-            float x = ProjectDegreeTo01(poseSample.orientation.eulerAngles.y);
-            float y = Time.time - poseSample.timestamp;
+            var x = ProjectDegreeTo01(poseSample.orientation.eulerAngles.y);
+            var y = Time.time - poseSample.timestamp;
             return new Vector2(x, y);
         }
 

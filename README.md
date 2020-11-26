@@ -4,8 +4,8 @@ An experiment to recognize head gestures (nod and headshake) with VR headset
 
 # Requirements
 
-- HTC Vive or Oculus Rift
-- Unity 2018.2.21f1
+- Oculus Quest / Oculus Rift S / HTC Vive
+- Unity 2019.4 LTS
 
 # Scenes
 
