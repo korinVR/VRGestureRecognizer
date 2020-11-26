@@ -5,6 +5,7 @@
 
 # All platforms
 /Library
+/Logs
 /Temp
 /obj
 *.csproj
@@ -14,4 +15,5 @@
 *.userprefs
 
 /.vs
+/dist
 
