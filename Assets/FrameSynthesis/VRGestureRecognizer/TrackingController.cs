@@ -10,7 +10,7 @@ namespace FrameSynthesis.VR
         
         void Start()
         {
-            SubsystemManager.GetInstances<XRInputSubsystem>(subsystems);
+            SubsystemManager.GetInstances(subsystems);
             subsystems.ForEach(subsystem => subsystem.TrySetTrackingOriginMode(TrackingOriginModeFlags.Device));
         }
 

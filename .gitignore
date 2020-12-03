@@ -1,19 +1,23 @@
-# OS X only
-.DS_Store
-*.swp
-*.Trashes
-
-# All platforms
+# Unity
 /Library
 /Logs
+/Recordings
 /Temp
-/obj
-*.csproj
-*.pidb
-*.unityproj
-*.sln
-*.userprefs
+/UserSettings
+/ProjectSettings/AndroidLogcatSettings.asset
 
+# Visual Studio
 /.vs
-/dist
+/*.csproj
+/*.sln
+/obj
+/.vsconfig
 
+# Visual Studio Code
+/.vscode
+
+# Rider
+/.idea
+
+# Build
+/dist

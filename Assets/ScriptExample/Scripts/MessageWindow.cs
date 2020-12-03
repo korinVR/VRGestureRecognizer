@@ -4,16 +4,10 @@ namespace ScriptExample
 {
     public class MessageWindow : MonoBehaviour
     {
-        [SerializeField]
-        ScriptEngine scriptEngine;
-
-        [SerializeField]
-        float interval = 0.05f;
-
-        [SerializeField]
-        TextMesh textMesh;
-        [SerializeField]
-        AudioSource audioSource;
+        [SerializeField] SimpleScriptEngine simpleScriptEngine;
+        [SerializeField] float interval = 0.05f;
+        [SerializeField] TextMesh textMesh;
+        [SerializeField] AudioSource audioSource;
 
         bool running;
 
@@ -24,7 +18,7 @@ namespace ScriptExample
 
         void Start()
         {
-            scriptEngine.ShowMessageHandler += OnShowMessage;
+            simpleScriptEngine.MessageUpdated += OnMessageUpdated;
         }
 
         void Update()
@@ -35,7 +29,7 @@ namespace ScriptExample
             if (cursor >= message.Length)
             {
                 running = false;
-                scriptEngine.NextCommand();
+                simpleScriptEngine.ExecuteNextCommand();
                 return;
             }
 
@@ -45,14 +39,14 @@ namespace ScriptExample
             {
                 prevCursor = cursor;
                 var letter = message[cursor];
-                if (letter != 32 && letter != 10)
+                if (letter != ' ')
                 {
                     audioSource.Play();
                 }
             }
         }
 
-        void OnShowMessage(string message)
+        void OnMessageUpdated(string message)
         {
             this.message = message;
             messageStartTime = Time.time;

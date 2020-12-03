@@ -8,10 +8,8 @@ namespace FrameSynthesis.VR.Example
         const string YesText = "Yes!";
         const string NoText = "No!";
 
-        [SerializeField]
-        float lifetime = 1f;
-        [SerializeField]
-        Vector3 velocity;
+        [SerializeField] float lifetime = 1f;
+        [SerializeField] Vector3 velocity;
 
         void Start()
         {

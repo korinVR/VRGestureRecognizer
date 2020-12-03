@@ -8,39 +8,31 @@ namespace FrameSynthesis.VR
 {
     public struct PoseSample
     {
-        public float timestamp;
-        public Quaternion orientation;
-        public Vector3 eulerAngles;
+        public readonly float Timestamp;
+        public Quaternion Orientation;
+        public Vector3 EulerAngles;
 
         public PoseSample(float timestamp, Quaternion orientation)
         {
-            this.timestamp = timestamp;
-            this.orientation = orientation;
+            Timestamp = timestamp;
+            Orientation = orientation;
 
-            eulerAngles = orientation.eulerAngles;
-            eulerAngles.x = MyMath.WrapDegree(eulerAngles.x);
-            eulerAngles.y = MyMath.WrapDegree(eulerAngles.y);
+            EulerAngles = orientation.eulerAngles;
+            EulerAngles.x = MathHelper.WrapDegree(EulerAngles.x);
+            EulerAngles.y = MathHelper.WrapDegree(EulerAngles.y);
         }
     }
 
     public class VRGestureRecognizer : MonoBehaviour
     {
-        public static VRGestureRecognizer Current { get; private set; }
+        [SerializeField] float recognitionInterval = 0.5f;
 
-        [SerializeField]
-        float recognitionInterval = 0.5f;
+        public event Action Nodded;
+        public event Action HeadShaken;
 
-        public event Action NodHandler;
-        public event Action HeadshakeHandler;
-
-        public Queue<PoseSample> PoseSamples { get; } = new Queue<PoseSample>();
+        public readonly Queue<PoseSample> PoseSamples = new Queue<PoseSample>();
 
         float prevGestureTime;
-
-        void Awake()
-        {
-            Current = this;
-        }
 
         void Update()
         {
@@ -58,34 +50,28 @@ namespace FrameSynthesis.VR
             RecognizeHeadshake();
         }
 
-        IEnumerable<PoseSample> Range(float startTime, float endTime)
-        {
-            return PoseSamples.Where(sample => 
-                sample.timestamp < Time.time - startTime && 
-                sample.timestamp >= Time.time - endTime);
-        }
+        IEnumerable<PoseSample> Range(float startTime, float endTime) =>
+            PoseSamples.Where(sample => 
+                sample.Timestamp < Time.time - startTime && 
+                sample.Timestamp >= Time.time - endTime);
 
         void RecognizeNod()
         {
             try
             {
-                var averagePitch = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.x);
-                var maxPitch = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.x);
-                var pitch = PoseSamples.First().eulerAngles.x;
+                var averagePitch = Range(0.2f, 0.4f).Average(sample => sample.EulerAngles.x);
+                var maxPitch = Range(0.01f, 0.2f).Max(sample => sample.EulerAngles.x);
+                var pitch = PoseSamples.First().EulerAngles.x;
 
-                if (maxPitch - averagePitch > 10f &&
-                    Mathf.Abs(pitch - averagePitch) < 5f)
-                {
-                    if (prevGestureTime < Time.time - recognitionInterval)
-                    {
-                        prevGestureTime = Time.time;
-                        NodHandler?.Invoke();
-                    }
-                }
+                if (!(maxPitch - averagePitch > 10f) || !(Mathf.Abs(pitch - averagePitch) < 5f)) return;
+                if (!(prevGestureTime < Time.time - recognitionInterval)) return;
+                
+                prevGestureTime = Time.time;
+                Nodded?.Invoke();
             }
             catch (InvalidOperationException)
             {
-                // PoseSamplesWithin contains no entry
+                // Range contains no entry
             }
         }
 
@@ -93,26 +79,21 @@ namespace FrameSynthesis.VR
         {
             try
             {
-                var averageYaw = Range(0.2f, 0.4f).Average(sample => sample.eulerAngles.y);
-                var maxYaw = Range(0.01f, 0.2f).Max(sample => sample.eulerAngles.y);
-                var minYaw = Range(0.01f, 0.2f).Min(sample => sample.eulerAngles.y);
-                var yaw = PoseSamples.First().eulerAngles.y;
+                var averageYaw = Range(0.2f, 0.4f).Average(sample => sample.EulerAngles.y);
+                var maxYaw = Range(0.01f, 0.2f).Max(sample => sample.EulerAngles.y);
+                var minYaw = Range(0.01f, 0.2f).Min(sample => sample.EulerAngles.y);
+                var yaw = PoseSamples.First().EulerAngles.y;
 
-                if ((maxYaw - averageYaw > 10f || averageYaw - minYaw > 10f) &&
-                    Mathf.Abs(yaw - averageYaw) < 5f)
-                {
-                    if (prevGestureTime < Time.time - recognitionInterval)
-                    {
-                        prevGestureTime = Time.time;
-                        HeadshakeHandler?.Invoke();
-                    }
-                }
+                if ((!(maxYaw - averageYaw > 10f) && !(averageYaw - minYaw > 10f)) || !(Mathf.Abs(yaw - averageYaw) < 5f)) return;
+                if (!(prevGestureTime < Time.time - recognitionInterval)) return;
+                
+                prevGestureTime = Time.time;
+                HeadShaken?.Invoke();
             }
             catch (InvalidOperationException)
             {
-                // PoseSamplesWithin contains no entry
+                // Range contains no entry
             }
         }
     }
 }
-

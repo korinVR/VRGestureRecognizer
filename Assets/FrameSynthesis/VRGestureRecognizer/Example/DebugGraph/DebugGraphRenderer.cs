@@ -4,8 +4,8 @@ namespace FrameSynthesis.VR
 {
     public class DebugGraphRenderer : MonoBehaviour
     {
-        [SerializeField]
-        Material material;
+        [SerializeField] VRGestureRecognizer vrGestureRecognizer;
+        [SerializeField] Material material;
 
         void OnPostRender()
         {
@@ -20,7 +20,7 @@ namespace FrameSynthesis.VR
             GL.Vertex3(0.5f, 0f, 0f);
             GL.Vertex3(0.5f, 1f, 0f);
 
-            var poseSamples = VRGestureRecognizer.Current.PoseSamples;
+            var poseSamples = vrGestureRecognizer.PoseSamples;
 
             GL.Color(Color.red);
 
@@ -28,7 +28,7 @@ namespace FrameSynthesis.VR
             var i = 0;
             foreach (var poseSample in poseSamples)
             {
-                var graphPosition = GetGraphPositionFromPoseSamplePitch(poseSample);
+                var graphPosition = CalculateGraphPositionFromPitch(poseSample);
                 if (i > 0)
                 {
                     GL.Vertex3(prevGraphPosition.x, prevGraphPosition.y, 0f);
@@ -43,7 +43,7 @@ namespace FrameSynthesis.VR
             i = 0;
             foreach (var poseSample in poseSamples)
             {
-                var graphPosition = GetGraphPositionFromPoseSampleYaw(poseSample);
+                var graphPosition = CalculateGraphPositionFromYaw(poseSample);
                 if (i > 0)
                 {
                     GL.Vertex3(prevGraphPosition.x, prevGraphPosition.y, 0f);
@@ -56,23 +56,21 @@ namespace FrameSynthesis.VR
             GL.End();
         }
 
-        Vector2 GetGraphPositionFromPoseSamplePitch(PoseSample poseSample)
+        static Vector2 CalculateGraphPositionFromPitch(PoseSample poseSample)
         {
-            var x = Time.time - poseSample.timestamp;
-            var y = ProjectDegreeTo01(poseSample.orientation.eulerAngles.x);
+            var x = Time.time - poseSample.Timestamp;
+            var y = DegreeTo01(poseSample.Orientation.eulerAngles.x);
             return new Vector2(x, y);
         }
 
-        Vector2 GetGraphPositionFromPoseSampleYaw(PoseSample poseSample)
+        static Vector2 CalculateGraphPositionFromYaw(PoseSample poseSample)
         {
-            var x = ProjectDegreeTo01(poseSample.orientation.eulerAngles.y);
-            var y = Time.time - poseSample.timestamp;
+            var x = DegreeTo01(poseSample.Orientation.eulerAngles.y);
+            var y = Time.time - poseSample.Timestamp;
             return new Vector2(x, y);
         }
 
-        float ProjectDegreeTo01(float degree)
-        {
-            return MyMath.LinearMap(MyMath.WrapDegree(degree), -180f, 180f, 0f, 1f);
-        }
+        static float DegreeTo01(float degree) =>
+            MathHelper.LinearMap(MathHelper.WrapDegree(degree), -180f, 180f, 0f, 1f);
     }
 }

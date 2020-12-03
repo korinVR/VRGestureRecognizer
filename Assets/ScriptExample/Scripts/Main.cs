@@ -5,31 +5,30 @@ namespace ScriptExample
 {
     public class Main : MonoBehaviour
     {
-        [SerializeField]
-        ScriptEngine scriptEngine;
-        [SerializeField]
-        AudioSource gestureSound;
+        [SerializeField] VRGestureRecognizer vrGestureRecognizer;
+        [SerializeField] SimpleScriptEngine simpleScriptEngine;
+        [SerializeField] AudioSource gestureSound;
 
         void Start()
         {
-            VRGestureRecognizer.Current.NodHandler += OnNod;
-            VRGestureRecognizer.Current.HeadshakeHandler += OnHeadshake;
+            vrGestureRecognizer.Nodded += OnNod;
+            vrGestureRecognizer.HeadShaken += OnHeadshake;
         }
 
         void OnNod()
         {
-            if (scriptEngine.IsWaitingYesNo)
+            if (simpleScriptEngine.IsWaitingYesNo)
             {
-                scriptEngine.AnswerYes();
+                simpleScriptEngine.AnswerYes();
                 gestureSound.Play();
             }
         }
 
         void OnHeadshake()
         {
-            if (scriptEngine.IsWaitingYesNo)
+            if (simpleScriptEngine.IsWaitingYesNo)
             {
-                scriptEngine.AnswerNo();
+                simpleScriptEngine.AnswerNo();
                 gestureSound.Play();
             }
         }

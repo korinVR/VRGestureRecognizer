@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-
-namespace FrameSynthesis
+﻿namespace FrameSynthesis
 {
-    public class MyMath
+    public static class MathHelper
     {
         public static float LinearMap(float value, float s0, float s1, float d0, float d1)
         {
